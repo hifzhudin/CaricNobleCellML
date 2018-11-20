@@ -1,0 +1,293 @@
+<?xml version='1.0'?>
+<model name="CaricatureNoble_model" xmlns="http://www.cellml.org/cellml/1.1#" xmlns:cellml="http://www.cellml.org/cellml/1.1#">
+    <units name="ms">
+        <unit prefix="milli" units="second"/>
+    </units>
+    <units name="mV">
+        <unit prefix="milli" units="volt"/>
+    </units>
+    <component name="main">
+        <variable name="time" units="ms"/>
+        <variable initial_value="-93.3333" name="V" units="mV"/>
+        <variable initial_value="1.0" name="h" units="dimensionless"/>
+        <variable initial_value="0.0" name="n" units="dimensionless"/>
+        <variable name="i_Na" units="dimensionless"/>
+        <variable name="i_K" units="dimensionless"/>
+        <variable initial_value="33.33333" name="G_Na" units="dimensionless"/>
+        <variable initial_value="40.0" name="E_Na" units="dimensionless"/>
+        <variable initial_value="-15.0" name="East" units="dimensionless"/>
+        <variable initial_value="-80.0" name="Edag" units="dimensionless"/>
+        <variable initial_value="-9.0" name="g_2" units="dimensionless"/>
+        <variable initial_value="0.0037037" name="F_n" units="dimensionless"/>
+        <variable initial_value="0.075" name="k_1" units="dimensionless"/>
+        <variable initial_value="0.04" name="k_2" units="dimensionless"/>
+        <variable initial_value="0.1" name="k_3" units="dimensionless"/>
+        <variable initial_value="-93.3333" name="E_1" units="dimensionless"/>
+        <variable initial_value="-55.0" name="E_2" units="dimensionless"/>
+        <variable initial_value="1.0" name="E_3" units="dimensionless"/>
+        <variable initial_value="0.5" name="F_h" units="dimensionless"/>
+        <variable initial_value="1.0" name="epsilon" units="dimensionless"/>
+        <variable initial_value="1.0" name="epsilon_2" units="dimensionless"/>
+        <variable name="G" units="dimensionless"/>
+        <variable name="H_1" units="dimensionless"/>
+        <variable name="H_2" units="dimensionless"/>
+        <variable name="H_3" units="dimensionless"/>
+        <variable name="Istim" units="dimensionless"/>
+        <variable initial_value="0" name="IstimStart" units="dimensionless"/>
+        <variable initial_value="50000" name="IstimEnd" units="dimensionless"/>
+        <variable initial_value="80.0" name="IstimAmplitude" units="dimensionless"/>
+        <variable initial_value="1000" name="IstimPeriod" units="dimensionless"/>
+        <variable initial_value="1.0" name="IstimPulseDuration" units="dimensionless"/>
+        <math xmlns="http://www.w3.org/1998/Math/MathML">
+            <apply>
+                <eq/>
+                <ci>H_1</ci>
+                <piecewise>
+                    <piece>
+                        <cn cellml:units="dimensionless">1.0</cn>
+                        <apply>
+                            <geq/>
+                            <ci>V</ci>
+                            <ci>East</ci>
+                        </apply>
+                    </piece>
+                    <otherwise>
+                        <cn cellml:units="dimensionless">0</cn>
+                    </otherwise>
+                </piecewise>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>H_2</ci>
+                <piecewise>
+                    <piece>
+                        <cn cellml:units="dimensionless">1.0</cn>
+                        <apply>
+                            <leq/>
+                            <ci>V</ci>
+                            <ci>Edag</ci>
+                        </apply>
+                    </piece>
+                    <otherwise>
+                        <cn cellml:units="dimensionless">0</cn>
+                    </otherwise>
+                </piecewise>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>H_3</ci>
+                <piecewise>
+                    <piece>
+                        <cn cellml:units="dimensionless">1.0</cn>
+                        <apply>
+                            <geq/>
+                            <ci>V</ci>
+                            <ci>Edag</ci>
+                        </apply>
+                    </piece>
+                    <otherwise>
+                        <cn cellml:units="dimensionless">0</cn>
+                    </otherwise>
+                </piecewise>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>G</ci>
+                <piecewise>
+                    <piece>
+                        <apply>
+                            <times/>
+                            <ci>k_1</ci>
+                            <apply>
+                                <minus/>
+                                <ci>E_1</ci>
+                                <ci>V</ci>
+                            </apply>
+                        </apply>
+                        <apply>
+                            <lt/>
+                            <ci>V</ci>
+                            <ci>Edag</ci>
+                        </apply>
+                    </piece>
+                    <piece>
+                        <apply>
+                            <times/>
+                            <ci>k_3</ci>
+                            <apply>
+                                <minus/>
+                                <ci>E_3</ci>
+                                <ci>V</ci>
+                            </apply>
+                        </apply>
+                        <apply>
+                            <geq/>
+                            <ci>V</ci>
+                            <ci>East</ci>
+                        </apply>
+                    </piece>
+                    <otherwise>
+                        <apply>
+                            <times/>
+                            <ci>k_2</ci>
+                            <apply>
+                                <minus/>
+                                <ci>V</ci>
+                                <ci>E_2</ci>
+                            </apply>
+                        </apply>
+                    </otherwise>
+                </piecewise>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>Istim</ci>
+                <piecewise>
+                    <piece>
+                        <ci>IstimAmplitude</ci>
+                        <apply>
+                            <and/>
+                            <apply>
+                                <geq/>
+                                <ci>time</ci>
+                                <ci>IstimStart</ci>
+                            </apply>
+                            <apply>
+                                <leq/>
+                                <ci>time</ci>
+                                <ci>IstimEnd</ci>
+                            </apply>
+                            <apply>
+                                <leq/>
+                                <apply>
+                                    <minus/>
+                                    <apply>
+                                        <minus/>
+                                        <ci>time</ci>
+                                        <ci>IstimStart</ci>
+                                    </apply>
+                                    <apply>
+                                        <times/>
+                                        <apply>
+                                            <floor/>
+                                            <apply>
+                                                <divide/>
+                                                <apply>
+                                                    <minus/>
+                                                    <ci>time</ci>
+                                                    <ci>IstimStart</ci>
+                                                </apply>
+                                                <ci>IstimPeriod</ci>
+                                            </apply>
+                                        </apply>
+                                        <ci>IstimPeriod</ci>
+                                    </apply>
+                                </apply>
+                                <ci>IstimPulseDuration</ci>
+                            </apply>
+                        </apply>
+                    </piece>
+                    <otherwise>
+                        <cn cellml:units="dimensionless">0</cn>
+                    </otherwise>
+                </piecewise>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>i_K</ci>
+                <apply>
+                    <plus/>
+                    <apply>
+                        <times/>
+                        <ci>g_2</ci>
+                        <ci>H_3</ci>
+                        <apply>
+                            <power/>
+                            <ci>n</ci>
+                            <cn cellml:units="dimensionless">4</cn>
+                        </apply>
+                    </apply>
+                    <ci>G</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <ci>i_Na</ci>
+                <apply>
+                    <divide/>
+                    <apply>
+                        <times/>
+                        <ci>G_Na</ci>
+                        <ci>h</ci>
+                        <apply>
+                            <minus/>
+                            <ci>E_Na</ci>
+                            <ci>V</ci>
+                        </apply>
+                        <ci>H_1</ci>
+                    </apply>
+                    <ci>epsilon</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>n</ci>
+                </apply>
+                <apply>
+                    <times/>
+                    <ci>epsilon_2</ci>
+                    <ci>F_n</ci>
+                    <apply>
+                        <minus/>
+                        <ci>H_3</ci>
+                        <ci>n</ci>
+                    </apply>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>h</ci>
+                </apply>
+                <apply>
+                    <divide/>
+                    <apply>
+                        <times/>
+                        <ci>F_h</ci>
+                        <apply>
+                            <minus/>
+                            <ci>H_2</ci>
+                            <ci>h</ci>
+                        </apply>
+                    </apply>
+                    <ci>epsilon</ci>
+                </apply>
+            </apply>
+            <apply>
+                <eq/>
+                <apply>
+                    <diff/>
+                    <bvar>
+                        <ci>time</ci>
+                    </bvar>
+                    <ci>V</ci>
+                </apply>
+                <apply>
+                    <plus/>
+                    <ci>Istim</ci>
+                    <ci>i_Na</ci>
+                    <ci>i_K</ci>
+                </apply>
+            </apply>
+        </math>
+    </component>
+</model>
