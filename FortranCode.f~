@@ -40,7 +40,7 @@ C RATES(1) is d/dt h in component main (dimensionless).
 C RATES(0) is d/dt V in component main (mV).
 C
 
-      SUBROUTINE initConsts(CONSTS, RATES, STATES)
+SUBROUTINE initConsts(CONSTS, RATES, STATES)
       REAL CONSTS(*), RATES(*), STATES(*)
       STATES(0) = -93.3333
       STATES(1) = 1.0
